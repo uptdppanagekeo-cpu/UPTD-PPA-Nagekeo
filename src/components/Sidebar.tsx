@@ -9,8 +9,7 @@ import {
   EyeOff, 
   Download,
   Building2,
-  Users,
-  FileSpreadsheet
+  Users
 } from 'lucide-react';
 import { INSTITUTION_INFO } from '../data/initialData';
 
@@ -64,12 +63,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'staff',
       label: 'Data Pegawai & Pejabat',
       icon: Users,
-      badge: null
-    },
-    {
-      id: 'spreadsheet',
-      label: 'Google Spreadsheet',
-      icon: FileSpreadsheet,
       badge: null
     },
     {

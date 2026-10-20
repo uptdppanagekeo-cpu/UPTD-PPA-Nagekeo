@@ -7,7 +7,6 @@ import { ReportsView } from './components/ReportsView';
 import { OfficialDocumentsView } from './components/OfficialDocumentsView';
 import { DirectoryView } from './components/DirectoryView';
 import { StaffManagementView } from './components/StaffManagementView';
-import { GoogleSheetsView } from './components/GoogleSheetsView';
 import { CaseDetailModal } from './components/CaseDetailModal';
 import { NewCaseModal } from './components/NewCaseModal';
 import { storageService } from './services/storageService';

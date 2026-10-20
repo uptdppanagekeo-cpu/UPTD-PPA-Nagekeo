@@ -66,15 +66,6 @@ export const Header: React.FC<HeaderProps> = ({
           Data Pegawai
         </button>
         <button
-          onClick={() => onTabChange('spreadsheet')}
-          className={`hover:text-neutral-900 transition-colors whitespace-nowrap shrink-0 pb-0.5 cursor-pointer flex items-center gap-1.5 ${
-            currentTab === 'spreadsheet' ? 'text-emerald-700 font-semibold border-b-2 border-emerald-600' : ''
-          }`}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-          <span>Google Sheets</span>
-        </button>
-        <button
           onClick={() => onTabChange('directory')}
           className={`hover:text-neutral-900 transition-colors whitespace-nowrap shrink-0 pb-0.5 cursor-pointer ${
             currentTab === 'directory' ? 'text-neutral-900 font-semibold border-b-2 border-sky-700' : ''
