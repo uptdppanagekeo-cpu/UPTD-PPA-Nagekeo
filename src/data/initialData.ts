@@ -1,4 +1,4 @@
-import { CaseRecord, DistrictNagekeo, ViolenceType } from '../types/case';
+import { CaseRecord, DistrictNagekeo, ViolenceType, StaffMember, OfficialsConfig } from '../types/case';
 
 export const DISTRICTS_NAGEKEO: {
   name: DistrictNagekeo;
@@ -53,12 +53,71 @@ export const VIOLENCE_TYPES: ViolenceType[] = [
   'Lainnya (Hak Asuh / Pernikahan Anak)'
 ];
 
-export const CASE_MANAGERS = [
-  { name: 'Maria P. S.Sos (Pekerja Sosial)', role: 'Case Manager & Asesor Utama', phone: '0813-3921-4411' },
-  { name: 'Petrus N. S.H. (Advokat PPA)', role: 'Pendamping Hukum & Paralegal', phone: '0812-4688-2900' },
-  { name: 'Yohana D. S.Psi (Konselor)', role: 'Konselor & Pemulihan Psikologis', phone: '0821-4509-1123' },
-  { name: 'Fransiskus X. (Petugas Penjangkauan)', role: 'Tim Reaksi Cepat / Penjangkauan Lapangan', phone: '0852-3810-7798' }
+export const DEFAULT_OFFICIALS: OfficialsConfig = {
+  headOfDepartment: {
+    title: 'Kepala Dinas PMDP3A Kabupaten Nagekeo',
+    name: 'Drs. Silvester Meo, M.M.',
+    nip: '19690315 199403 1 007',
+    rank: 'Pembina Utama Muda (IV/c)'
+  },
+  headOfDivision: {
+    title: 'Kepala Bidang Pemberdayaan Perempuan dan Perlindungan Anak',
+    name: 'Yovita D. Nenu, S.Pt.',
+    nip: '19750824 200212 2 004',
+    rank: 'Pembina (IV/a)'
+  },
+  headOfUnit: {
+    title: 'Kepala UPTD Perlindungan Perempuan dan Anak',
+    name: 'Theresia M. Dapa, S.Sos., M.Si.',
+    nip: '19780512 200501 2 008',
+    rank: 'Penata Tk. I (III/d)'
+  }
+};
+
+export const INITIAL_STAFF_MEMBERS: StaffMember[] = [
+  {
+    id: 'staff-1',
+    name: 'Maria P. S.Sos',
+    nip: '19880414 201101 2 003',
+    role: 'Pekerja Sosial & Case Manager Utama',
+    phone: '0813-3921-4411',
+    email: 'peksos.maria@nagekeokab.go.id',
+    isActive: true
+  },
+  {
+    id: 'staff-2',
+    name: 'Petrus N. S.H.',
+    nip: '19851120 201001 1 012',
+    role: 'Advokat & Pendamping Hukum PPA',
+    phone: '0812-4688-2900',
+    email: 'hukum.petrus@nagekeokab.go.id',
+    isActive: true
+  },
+  {
+    id: 'staff-3',
+    name: 'Yohana D. S.Psi',
+    nip: '19920703 201502 2 001',
+    role: 'Konselor & Pemulihan Psikologis',
+    phone: '0821-4509-1123',
+    email: 'konselor.yohana@nagekeokab.go.id',
+    isActive: true
+  },
+  {
+    id: 'staff-4',
+    name: 'Fransiskus X.',
+    nip: '19900918 201402 1 005',
+    role: 'Tim Reaksi Cepat / Penjangkauan Lapangan',
+    phone: '0852-3810-7798',
+    email: 'trc.frans@nagekeokab.go.id',
+    isActive: true
+  }
 ];
+
+export const CASE_MANAGERS = INITIAL_STAFF_MEMBERS.map(s => ({
+  name: `${s.name} (${s.role.split('&')[0].trim()})`,
+  role: s.role,
+  phone: s.phone
+}));
 
 export const INSTITUTION_INFO = {
   regency: 'Kabupaten Nagekeo',
@@ -66,10 +125,12 @@ export const INSTITUTION_INFO = {
   department: 'Dinas Pemberdayaan Masyarakat dan Desa, Pemberdayaan Perempuan dan Perlindungan Anak (DINAS PMDP3A)',
   departmentShort: 'DINAS PMDP3A',
   unit: 'Unit Pelaksana Teknis Daerah Perlindungan Perempuan dan Anak (UPTD PPA)',
-  headOfUnit: 'Theresia M. Dapa, S.Sos., M.Si.',
-  nipHead: '19780512 200501 2 008',
-  headOfDepartment: 'Drs. Silvester Meo, M.M.',
-  nipDepartmentHead: '19690315 199403 1 007',
+  headOfUnit: DEFAULT_OFFICIALS.headOfUnit.name,
+  nipHead: DEFAULT_OFFICIALS.headOfUnit.nip,
+  headOfDivision: DEFAULT_OFFICIALS.headOfDivision.name,
+  nipDivisionHead: DEFAULT_OFFICIALS.headOfDivision.nip,
+  headOfDepartment: DEFAULT_OFFICIALS.headOfDepartment.name,
+  nipDepartmentHead: DEFAULT_OFFICIALS.headOfDepartment.nip,
   address: 'Kompleks Perkantoran Civic Center, Mbay, Kec. Aesesa, Kab. Nagekeo, NTT 86472',
   hotline: '0811-3829-129 / (0386) 21129',
   email: 'uptdppanagekeo@gmail.com',

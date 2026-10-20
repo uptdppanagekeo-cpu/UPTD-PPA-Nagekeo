@@ -9,21 +9,24 @@ import {
   User,
   ChevronDown
 } from 'lucide-react';
-import { CaseRecord } from '../types/case';
-import { INSTITUTION_INFO } from '../data/initialData';
+import { CaseRecord, OfficialsConfig } from '../types/case';
+import { INSTITUTION_INFO, DEFAULT_OFFICIALS } from '../data/initialData';
 import crestPath from '../assets/images/crest_uptd_ppa_1792471725152.jpg';
 
 interface OfficialDocumentsViewProps {
   cases: CaseRecord[];
+  officials?: OfficialsConfig;
   initialCaseId?: string;
   initialDocType?: string;
 }
 
 export const OfficialDocumentsView: React.FC<OfficialDocumentsViewProps> = ({
   cases,
+  officials,
   initialCaseId,
   initialDocType = 'berita-acara'
 }) => {
+  const currentOfficials = officials || DEFAULT_OFFICIALS;
   const [selectedCaseId, setSelectedCaseId] = useState<string>(
     initialCaseId || (cases.length > 0 ? cases[0].id : '')
   );
@@ -383,8 +386,8 @@ export const OfficialDocumentsView: React.FC<OfficialDocumentsViewProps> = ({
                   <p>Kabupaten Nagekeo,</p>
                 </div>
                 <div>
-                  <p className="font-bold underline uppercase">{INSTITUTION_INFO.headOfUnit}</p>
-                  <p className="font-mono-numbers text-[10px] text-neutral-500">NIP. {INSTITUTION_INFO.nipHead}</p>
+                  <p className="font-bold underline uppercase">{currentOfficials.headOfUnit.name}</p>
+                  <p className="font-mono-numbers text-[10px] text-neutral-500">NIP. {currentOfficials.headOfUnit.nip}</p>
                 </div>
               </div>
             </div>
@@ -446,8 +449,8 @@ export const OfficialDocumentsView: React.FC<OfficialDocumentsViewProps> = ({
                   <p>Kabupaten Nagekeo,</p>
                 </div>
                 <div>
-                  <p className="font-bold underline uppercase">{INSTITUTION_INFO.headOfUnit}</p>
-                  <p className="font-mono-numbers text-[10px] text-neutral-500">NIP. {INSTITUTION_INFO.nipHead}</p>
+                  <p className="font-bold underline uppercase">{currentOfficials.headOfUnit.name}</p>
+                  <p className="font-mono-numbers text-[10px] text-neutral-500">NIP. {currentOfficials.headOfUnit.nip}</p>
                 </div>
               </div>
             </div>
@@ -536,8 +539,8 @@ export const OfficialDocumentsView: React.FC<OfficialDocumentsViewProps> = ({
                   <p>Kabupaten Nagekeo,</p>
                 </div>
                 <div>
-                  <p className="font-bold underline uppercase">{INSTITUTION_INFO.headOfUnit}</p>
-                  <p className="font-mono-numbers text-[10px] text-neutral-500">NIP. {INSTITUTION_INFO.nipHead}</p>
+                  <p className="font-bold underline uppercase">{currentOfficials.headOfUnit.name}</p>
+                  <p className="font-mono-numbers text-[10px] text-neutral-500">NIP. {currentOfficials.headOfUnit.nip}</p>
                 </div>
               </div>
             </div>

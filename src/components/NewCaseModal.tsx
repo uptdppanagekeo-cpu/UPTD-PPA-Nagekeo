@@ -1,22 +1,33 @@
 import React, { useState } from 'react';
 import { X, Save, AlertCircle, ShieldPlus } from 'lucide-react';
-import { CaseRecord, DistrictNagekeo, ViolenceType, VictimCategory, PerpetratorRelationship } from '../types/case';
-import { DISTRICTS_NAGEKEO, VIOLENCE_TYPES, CASE_MANAGERS } from '../data/initialData';
+import { CaseRecord, DistrictNagekeo, ViolenceType, VictimCategory, PerpetratorRelationship, StaffMember } from '../types/case';
+import { DISTRICTS_NAGEKEO, VIOLENCE_TYPES, INITIAL_STAFF_MEMBERS } from '../data/initialData';
 import { storageService } from '../services/storageService';
 
 interface NewCaseModalProps {
   existingCases: CaseRecord[];
+  staffList?: StaffMember[];
   onClose: () => void;
   onCaseCreated: (createdCase: CaseRecord) => void;
 }
 
 export const NewCaseModal: React.FC<NewCaseModalProps> = ({
   existingCases,
+  staffList,
   onClose,
   onCaseCreated
 }) => {
   const autoRegNumber = storageService.generateRegistrationNumber(existingCases);
   const todayStr = new Date().toISOString().slice(0, 10);
+
+  // Dynamic active staff options
+  const activeStaff = staffList && staffList.length > 0
+    ? staffList.filter(s => s.isActive)
+    : INITIAL_STAFF_MEMBERS;
+
+  const defaultManager = activeStaff[0] 
+    ? `${activeStaff[0].name} (${activeStaff[0].role})`
+    : 'Petugas UPTD PPA';
 
   // Form States
   const [reportedDate, setReportedDate] = useState(todayStr);
@@ -62,7 +73,7 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
   const [chronology, setChronology] = useState('');
 
   // Penanganan
-  const [caseManager, setCaseManager] = useState(CASE_MANAGERS[0].name);
+  const [caseManager, setCaseManager] = useState(defaultManager);
   const [selectedServices, setSelectedServices] = useState<string[]>([
     'Konseling Psikososial',
     'Visum et Repertum'
@@ -762,8 +773,10 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
                   onChange={(e) => setCaseManager(e.target.value)}
                   className="w-full px-3 py-2 bg-white border border-neutral-300 rounded text-xs font-semibold"
                 >
-                  {CASE_MANAGERS.map(cm => (
-                    <option key={cm.name} value={cm.name}>{cm.name} - {cm.role}</option>
+                  {activeStaff.map(st => (
+                    <option key={st.id} value={`${st.name} (${st.role})`}>
+                      {st.name} - {st.role} {st.nip ? `(NIP. ${st.nip})` : ''}
+                    </option>
                   ))}
                 </select>
               </div>

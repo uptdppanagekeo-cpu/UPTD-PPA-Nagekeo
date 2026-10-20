@@ -6,14 +6,19 @@ import { CaseRegisterView } from './components/CaseRegisterView';
 import { ReportsView } from './components/ReportsView';
 import { OfficialDocumentsView } from './components/OfficialDocumentsView';
 import { DirectoryView } from './components/DirectoryView';
+import { StaffManagementView } from './components/StaffManagementView';
 import { CaseDetailModal } from './components/CaseDetailModal';
 import { NewCaseModal } from './components/NewCaseModal';
 import { storageService } from './services/storageService';
-import { CaseRecord, ProgressNote, ServiceReferral } from './types/case';
+import { CaseRecord, ProgressNote, ServiceReferral, StaffMember, OfficialsConfig } from './types/case';
+import { DEFAULT_OFFICIALS } from './data/initialData';
 import { Check } from 'lucide-react';
 
 export default function App() {
   const [cases, setCases] = useState<CaseRecord[]>([]);
+  const [staffList, setStaffList] = useState<StaffMember[]>([]);
+  const [officials, setOfficials] = useState<OfficialsConfig>(DEFAULT_OFFICIALS);
+  
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
   const [selectedCaseForDetail, setSelectedCaseForDetail] = useState<CaseRecord | null>(null);
   const [isNewCaseOpen, setIsNewCaseOpen] = useState<boolean>(false);
@@ -26,6 +31,10 @@ export default function App() {
   useEffect(() => {
     const loadedCases = storageService.getCases();
     setCases(loadedCases);
+    const loadedStaff = storageService.getStaffMembers();
+    setStaffList(loadedStaff);
+    const loadedOfficials = storageService.getOfficials();
+    setOfficials(loadedOfficials);
   }, []);
 
   const showToast = (msg: string) => {
@@ -91,6 +100,27 @@ export default function App() {
     showToast('Berkas cadangan data kasus (JSON) berhasil diunduh.');
   };
 
+  // Staff and Officials Handlers
+  const handleUpdateOfficials = (newOfficials: OfficialsConfig) => {
+    storageService.saveOfficials(newOfficials);
+    setOfficials(newOfficials);
+  };
+
+  const handleAddStaff = (newMember: Omit<StaffMember, 'id'>) => {
+    const updated = storageService.addStaffMember(newMember);
+    setStaffList(updated);
+  };
+
+  const handleUpdateStaff = (updatedMember: StaffMember) => {
+    const updated = storageService.updateStaffMember(updatedMember);
+    setStaffList(updated);
+  };
+
+  const handleDeleteStaff = (id: string) => {
+    const updated = storageService.deleteStaffMember(id);
+    setStaffList(updated);
+  };
+
   const activeCasesCount = cases.filter(c => c.status !== 'Selesai / Ditutup').length;
 
   return (
@@ -128,6 +158,7 @@ export default function App() {
           {currentTab === 'dashboard' && (
             <DashboardView
               cases={cases}
+              staffList={staffList}
               onSelectCase={(c) => setSelectedCaseForDetail(c)}
               onOpenNewCase={() => setIsNewCaseOpen(true)}
               onNavigateToRegister={() => setCurrentTab('register')}
@@ -147,14 +178,30 @@ export default function App() {
           )}
 
           {currentTab === 'reports' && (
-            <ReportsView cases={cases} />
+            <ReportsView 
+              cases={cases} 
+              officials={officials}
+            />
           )}
 
           {currentTab === 'documents' && (
             <OfficialDocumentsView
               cases={cases}
+              officials={officials}
               initialCaseId={documentParams?.caseId}
               initialDocType={documentParams?.docType || 'berita-acara'}
+            />
+          )}
+
+          {currentTab === 'staff' && (
+            <StaffManagementView
+              staffList={staffList}
+              officials={officials}
+              onUpdateOfficials={handleUpdateOfficials}
+              onAddStaff={handleAddStaff}
+              onUpdateStaff={handleUpdateStaff}
+              onDeleteStaff={handleDeleteStaff}
+              onShowToast={showToast}
             />
           )}
 
@@ -168,6 +215,7 @@ export default function App() {
       {selectedCaseForDetail && (
         <CaseDetailModal
           caseData={selectedCaseForDetail}
+          staffList={staffList}
           onClose={() => setSelectedCaseForDetail(null)}
           onUpdateCase={handleUpdateCase}
           onAddProgressLog={handleAddProgressLog}
@@ -181,6 +229,7 @@ export default function App() {
       {isNewCaseOpen && (
         <NewCaseModal
           existingCases={cases}
+          staffList={staffList}
           onClose={() => setIsNewCaseOpen(false)}
           onCaseCreated={handleCaseCreated}
         />

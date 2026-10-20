@@ -9,16 +9,18 @@ import {
   ShieldCheck,
   Building
 } from 'lucide-react';
-import { CaseRecord } from '../types/case';
-import { DISTRICTS_NAGEKEO, VIOLENCE_TYPES, INSTITUTION_INFO } from '../data/initialData';
+import { CaseRecord, OfficialsConfig } from '../types/case';
+import { DISTRICTS_NAGEKEO, VIOLENCE_TYPES, INSTITUTION_INFO, DEFAULT_OFFICIALS } from '../data/initialData';
 import { storageService } from '../services/storageService';
 import crestPath from '../assets/images/crest_uptd_ppa_1792471725152.jpg';
 
 interface ReportsViewProps {
   cases: CaseRecord[];
+  officials?: OfficialsConfig;
 }
 
-export const ReportsView: React.FC<ReportsViewProps> = ({ cases }) => {
+export const ReportsView: React.FC<ReportsViewProps> = ({ cases, officials }) => {
+  const currentOfficials = officials || DEFAULT_OFFICIALS;
   const [selectedYear, setSelectedYear] = useState('2026');
   const [selectedPeriod, setSelectedPeriod] = useState<'Tahunan' | 'Triwulan 1' | 'Triwulan 2' | 'Bulanan'>('Tahunan');
   const [selectedMonth, setSelectedMonth] = useState('Semua');
@@ -349,39 +351,74 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ cases }) => {
           </div>
         </div>
 
-        {/* Signature & Authentication Section (Khas Dokumen Pemkab) */}
-        <div className="mt-8 pt-6 border-t border-neutral-200 grid grid-cols-2 gap-8 text-xs text-center">
+        {/* Signature & Authentication Section (Khas Dokumen Pemkab: Kepala Dinas, Kabid PPPA, Kepala UPTD) */}
+        <div className="mt-8 pt-6 border-t border-neutral-200 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-center">
+          {/* Kepala Dinas PMDP3A */}
           <div className="space-y-16">
             <div>
               <p className="text-neutral-600">Mengetahui,</p>
               <p className="font-bold text-neutral-900 uppercase">
-                Kepala Dinas PMDP3A Kabupaten Nagekeo
+                {currentOfficials.headOfDepartment.title}
               </p>
             </div>
             <div>
               <p className="font-bold text-neutral-900 underline uppercase">
-                {INSTITUTION_INFO.headOfDepartment}
+                {currentOfficials.headOfDepartment.name}
               </p>
               <p className="text-neutral-500 font-mono-numbers">
-                NIP. {INSTITUTION_INFO.nipDepartmentHead}
+                NIP. {currentOfficials.headOfDepartment.nip}
               </p>
+              {currentOfficials.headOfDepartment.rank && (
+                <p className="text-[10px] text-neutral-400">
+                  {currentOfficials.headOfDepartment.rank}
+                </p>
+              )}
             </div>
           </div>
 
+          {/* Kepala Bidang PPPA */}
+          <div className="space-y-16">
+            <div>
+              <p className="text-neutral-600">Menyetujui / Memverifikasi,</p>
+              <p className="font-bold text-neutral-900 uppercase">
+                {currentOfficials.headOfDivision.title}
+              </p>
+            </div>
+            <div>
+              <p className="font-bold text-neutral-900 underline uppercase">
+                {currentOfficials.headOfDivision.name}
+              </p>
+              <p className="text-neutral-500 font-mono-numbers">
+                NIP. {currentOfficials.headOfDivision.nip}
+              </p>
+              {currentOfficials.headOfDivision.rank && (
+                <p className="text-[10px] text-neutral-400">
+                  {currentOfficials.headOfDivision.rank}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Kepala UPTD PPA */}
           <div className="space-y-16">
             <div>
               <p className="text-neutral-600">Mbay, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
               <p className="font-bold text-neutral-900 uppercase">
-                Kepala UPTD Perlindungan Perempuan dan Anak Kabupaten Nagekeo
+                {currentOfficials.headOfUnit.title}
               </p>
             </div>
             <div>
               <p className="font-bold text-neutral-900 underline uppercase">
-                {INSTITUTION_INFO.headOfUnit}
+                {currentOfficials.headOfUnit.name}
               </p>
               <p className="text-neutral-500 font-mono-numbers">
-                NIP. {INSTITUTION_INFO.nipHead}
+                NIP. {currentOfficials.headOfUnit.nip}
               </p>
+              {currentOfficials.headOfUnit.rank && (
+                <p className="text-[10px] text-neutral-400">
+                  {currentOfficials.headOfUnit.rank}
+                </p>
+              )}
             </div>
           </div>
         </div>

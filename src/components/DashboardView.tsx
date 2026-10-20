@@ -9,8 +9,8 @@ import {
   ArrowRight,
   Plus
 } from 'lucide-react';
-import { CaseRecord } from '../types/case';
-import { DISTRICTS_NAGEKEO, CASE_MANAGERS } from '../data/initialData';
+import { CaseRecord, StaffMember } from '../types/case';
+import { DISTRICTS_NAGEKEO, INITIAL_STAFF_MEMBERS } from '../data/initialData';
 
 import bannerImage from '../assets/images/banner_layanan_konseling_1792471725565.jpg';
 import peksosAvatar from '../assets/images/avatar_petugas_peksos_1792471725438.jpg';
@@ -18,6 +18,7 @@ import hukumAvatar from '../assets/images/avatar_petugas_hukum_1792471726224.jpg
 
 interface DashboardViewProps {
   cases: CaseRecord[];
+  staffList?: StaffMember[];
   onSelectCase: (caseItem: CaseRecord) => void;
   onOpenNewCase: () => void;
   onNavigateToRegister: () => void;
@@ -25,10 +26,17 @@ interface DashboardViewProps {
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
   cases,
+  staffList,
   onSelectCase,
   onOpenNewCase,
   onNavigateToRegister
 }) => {
+  const activeStaff = staffList && staffList.length > 0 
+    ? staffList.filter(s => s.isActive)
+    : INITIAL_STAFF_MEMBERS;
+  const staff1 = activeStaff[0] || INITIAL_STAFF_MEMBERS[0];
+  const staff2 = activeStaff[1] || INITIAL_STAFF_MEMBERS[1];
+
   // Calculations
   const totalCases = cases.length;
   const childVictims = cases.filter(c => c.victim.category === 'Anak Perempuan' || c.victim.category === 'Anak Laki-Laki').length;
@@ -282,16 +290,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="flex items-center gap-2 p-2 rounded bg-neutral-50 border border-neutral-100">
                 <img 
                   src={peksosAvatar} 
-                  alt="Maria P. S.Sos"
+                  alt={staff1.name}
                   referrerPolicy="no-referrer"
                   className="w-8 h-8 rounded-full object-cover shrink-0" 
                 />
                 <div className="min-w-0">
                   <div className="text-[11px] font-semibold text-neutral-900 truncate">
-                    Maria P. S.Sos
+                    {staff1.name}
                   </div>
                   <div className="text-[10px] text-neutral-500 truncate">
-                    Pekerja Sosial UPTD
+                    {staff1.role}
                   </div>
                 </div>
               </div>
@@ -299,16 +307,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="flex items-center gap-2 p-2 rounded bg-neutral-50 border border-neutral-100">
                 <img 
                   src={hukumAvatar} 
-                  alt="Petrus N. S.H."
+                  alt={staff2.name}
                   referrerPolicy="no-referrer"
                   className="w-8 h-8 rounded-full object-cover shrink-0" 
                 />
                 <div className="min-w-0">
                   <div className="text-[11px] font-semibold text-neutral-900 truncate">
-                    Petrus N. S.H.
+                    {staff2.name}
                   </div>
                   <div className="text-[10px] text-neutral-500 truncate">
-                    Advokat &amp; Tim Hukum
+                    {staff2.role}
                   </div>
                 </div>
               </div>

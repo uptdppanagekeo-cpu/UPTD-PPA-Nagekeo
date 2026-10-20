@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -9,7 +8,8 @@ import {
   Eye, 
   EyeOff, 
   Download,
-  Building2
+  Building2,
+  Users
 } from 'lucide-react';
 import { INSTITUTION_INFO } from '../data/initialData';
 
@@ -57,6 +57,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'documents',
       label: 'Cetak Dokumen Resmi',
       icon: FileCheck,
+      badge: null
+    },
+    {
+      id: 'staff',
+      label: 'Data Pegawai & Pejabat',
+      icon: Users,
       badge: null
     },
     {

@@ -138,3 +138,27 @@ export interface CaseFilterState {
   year: string;
   month: string;
 }
+
+export interface StaffMember {
+  id: string;
+  name: string;
+  nip?: string;
+  role: string;
+  phone: string;
+  email?: string;
+  isActive: boolean;
+}
+
+export interface OfficialPosition {
+  title: string;
+  name: string;
+  nip: string;
+  rank?: string;
+}
+
+export interface OfficialsConfig {
+  headOfDepartment: OfficialPosition; // Kepala Dinas PMDP3A
+  headOfDivision: OfficialPosition;   // Kepala Bidang PPPA
+  headOfUnit: OfficialPosition;       // Kepala UPTD PPA
+}
+

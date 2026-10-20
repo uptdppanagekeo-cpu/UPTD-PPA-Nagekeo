@@ -10,11 +10,12 @@ import {
   ArrowRight,
   FileText
 } from 'lucide-react';
-import { CaseRecord, CaseStatus, ProgressNote, ServiceReferral } from '../types/case';
-import { PARTNER_AGENCIES, CASE_MANAGERS } from '../data/initialData';
+import { CaseRecord, CaseStatus, ProgressNote, ServiceReferral, StaffMember } from '../types/case';
+import { PARTNER_AGENCIES, INITIAL_STAFF_MEMBERS } from '../data/initialData';
 
 interface CaseDetailModalProps {
   caseData: CaseRecord;
+  staffList?: StaffMember[];
   onClose: () => void;
   onUpdateCase: (updated: CaseRecord) => void;
   onAddProgressLog: (caseId: string, log: Omit<ProgressNote, 'id'>) => void;
@@ -25,6 +26,7 @@ interface CaseDetailModalProps {
 
 export const CaseDetailModal: React.FC<CaseDetailModalProps> = ({
   caseData,
+  staffList,
   onClose,
   onUpdateCase,
   onAddProgressLog,
@@ -32,6 +34,9 @@ export const CaseDetailModal: React.FC<CaseDetailModalProps> = ({
   onOpenDocumentPrint,
   privacyMode
 }) => {
+  const activeStaff = staffList && staffList.length > 0 
+    ? staffList.filter(s => s.isActive)
+    : INITIAL_STAFF_MEMBERS;
   const [activeTab, setActiveTab] = useState<'kronologi' | 'progress' | 'referrals' | 'status'>('kronologi');
 
   // New Progress Note Form State
@@ -338,8 +343,8 @@ export const CaseDetailModal: React.FC<CaseDetailModalProps> = ({
                       onChange={(e) => setNewOfficer(e.target.value)}
                       className="w-full px-2.5 py-1.5 bg-white border border-neutral-200 rounded text-xs"
                     >
-                      {CASE_MANAGERS.map(cm => (
-                        <option key={cm.name} value={cm.name}>{cm.name}</option>
+                      {activeStaff.map(cm => (
+                        <option key={cm.id} value={`${cm.name} (${cm.role})`}>{cm.name} - {cm.role}</option>
                       ))}
                     </select>
                   </div>

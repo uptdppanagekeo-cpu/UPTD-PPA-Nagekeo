@@ -58,6 +58,14 @@ export const Header: React.FC<HeaderProps> = ({
           Dokumen Resmi
         </button>
         <button
+          onClick={() => onTabChange('staff')}
+          className={`hover:text-neutral-900 transition-colors whitespace-nowrap shrink-0 pb-0.5 cursor-pointer ${
+            currentTab === 'staff' ? 'text-neutral-900 font-semibold border-b-2 border-sky-700' : ''
+          }`}
+        >
+          Data Pegawai
+        </button>
+        <button
           onClick={() => onTabChange('directory')}
           className={`hover:text-neutral-900 transition-colors whitespace-nowrap shrink-0 pb-0.5 cursor-pointer ${
             currentTab === 'directory' ? 'text-neutral-900 font-semibold border-b-2 border-sky-700' : ''

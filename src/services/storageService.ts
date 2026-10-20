@@ -1,5 +1,5 @@
-import { CaseRecord, ProgressNote, ServiceReferral } from '../types/case';
-import { INITIAL_CASES } from '../data/initialData';
+import { CaseRecord, ProgressNote, ServiceReferral, StaffMember, OfficialsConfig } from '../types/case';
+import { INITIAL_CASES, INITIAL_STAFF_MEMBERS, DEFAULT_OFFICIALS } from '../data/initialData';
 
 const STORAGE_KEY = 'sippa_nagekeo_cases_v1';
 
@@ -163,5 +163,76 @@ export const storageService = {
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
+  },
+
+  // ===== PEGAWAI & PETUGAS PENDAMPING (CASE MANAGERS) =====
+  getStaffMembers(): StaffMember[] {
+    try {
+      const data = localStorage.getItem('sippa_nagekeo_staff_v1');
+      if (!data) {
+        localStorage.setItem('sippa_nagekeo_staff_v1', JSON.stringify(INITIAL_STAFF_MEMBERS));
+        return INITIAL_STAFF_MEMBERS;
+      }
+      return JSON.parse(data);
+    } catch (e) {
+      console.error('Gagal membaca data pegawai dari storage', e);
+      return INITIAL_STAFF_MEMBERS;
+    }
+  },
+
+  saveStaffMembers(staff: StaffMember[]): void {
+    try {
+      localStorage.setItem('sippa_nagekeo_staff_v1', JSON.stringify(staff));
+    } catch (e) {
+      console.error('Gagal menyimpan data pegawai ke storage', e);
+    }
+  },
+
+  addStaffMember(member: Omit<StaffMember, 'id'>): StaffMember[] {
+    const list = this.getStaffMembers();
+    const newStaff: StaffMember = {
+      ...member,
+      id: `staff-${Date.now()}`
+    };
+    const updated = [...list, newStaff];
+    this.saveStaffMembers(updated);
+    return updated;
+  },
+
+  updateStaffMember(updatedMember: StaffMember): StaffMember[] {
+    const list = this.getStaffMembers();
+    const updated = list.map((s) => (s.id === updatedMember.id ? updatedMember : s));
+    this.saveStaffMembers(updated);
+    return updated;
+  },
+
+  deleteStaffMember(id: string): StaffMember[] {
+    const list = this.getStaffMembers();
+    const updated = list.filter((s) => s.id !== id);
+    this.saveStaffMembers(updated);
+    return updated;
+  },
+
+  // ===== PEJABAT STRUKTURAL DINAS PMDP3A =====
+  getOfficials(): OfficialsConfig {
+    try {
+      const data = localStorage.getItem('sippa_nagekeo_officials_v1');
+      if (!data) {
+        localStorage.setItem('sippa_nagekeo_officials_v1', JSON.stringify(DEFAULT_OFFICIALS));
+        return DEFAULT_OFFICIALS;
+      }
+      return JSON.parse(data);
+    } catch (e) {
+      console.error('Gagal membaca data pejabat dari storage', e);
+      return DEFAULT_OFFICIALS;
+    }
+  },
+
+  saveOfficials(officials: OfficialsConfig): void {
+    try {
+      localStorage.setItem('sippa_nagekeo_officials_v1', JSON.stringify(officials));
+    } catch (e) {
+      console.error('Gagal menyimpan data pejabat ke storage', e);
+    }
   }
 };
