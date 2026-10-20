@@ -7,10 +7,14 @@ import {
   MapPin, 
   AlertTriangle,
   ArrowRight,
-  Plus
+  Plus,
+  FileSpreadsheet,
+  ExternalLink,
+  RefreshCw
 } from 'lucide-react';
 import { CaseRecord, StaffMember } from '../types/case';
 import { DISTRICTS_NAGEKEO, INITIAL_STAFF_MEMBERS } from '../data/initialData';
+import { googleSheetsService } from '../services/googleSheetsService';
 
 import bannerImage from '../assets/images/banner_layanan_konseling_1792471725565.jpg';
 import peksosAvatar from '../assets/images/avatar_petugas_peksos_1792471725438.jpg';
@@ -22,6 +26,7 @@ interface DashboardViewProps {
   onSelectCase: (caseItem: CaseRecord) => void;
   onOpenNewCase: () => void;
   onNavigateToRegister: () => void;
+  onNavigateToSpreadsheet: () => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -192,6 +197,63 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Google Spreadsheet Sync Banner / Integration Widget */}
+      {(() => {
+        const connected = googleSheetsService.getConnectedSpreadsheet();
+        return (
+          <div className="bg-gradient-to-r from-emerald-900 to-neutral-900 text-white rounded-xl p-4 md:p-5 border border-emerald-800/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-start sm:items-center gap-3.5">
+              <div className="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0">
+                <FileSpreadsheet className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+                    Google Spreadsheet (DINAS PMDP3A)
+                  </span>
+                  {connected ? (
+                    <span className="text-[10px] font-semibold bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Terhubung
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-medium bg-neutral-800 text-neutral-400 border border-neutral-700 px-2 py-0.5 rounded-full">
+                      Belum Terhubung
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-neutral-300 mt-0.5">
+                  {connected 
+                    ? `Sinkron ke: ${connected.title} (3 Tab: Register Kasus, Rekap Kecamatan, & Pegawai)` 
+                    : 'Hubungkan dasboard dengan Google Spreadsheet untuk cadangan live, cetak rekap otomatis, dan pelaporan KemenPPPA.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 shrink-0">
+              {connected && (
+                <a
+                  href={connected.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 text-xs font-medium text-emerald-200 hover:text-white bg-white/10 hover:bg-white/15 rounded-lg border border-white/15 flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Buka Sheet</span>
+                </a>
+              )}
+              <button
+                onClick={onNavigateToSpreadsheet}
+                className="px-3.5 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>{connected ? 'Kelola & Sinkronkan' : 'Hubungkan Spreadsheet'}</span>
+              </button>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Two Column Layout: District Geographic Distribution & Violence Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
