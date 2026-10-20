@@ -63,7 +63,8 @@ export const CASE_MANAGERS = [
 export const INSTITUTION_INFO = {
   regency: 'Kabupaten Nagekeo',
   province: 'Nusa Tenggara Timur (NTT)',
-  department: 'Dinas Sosial, Pemberdayaan Perempuan dan Perlindungan Anak',
+  department: 'Dinas Pemberdayaan Masyarakat dan Desa, Pemberdayaan Perempuan dan Perlindungan Anak (DINAS PMDP3A)',
+  departmentShort: 'DINAS PMDP3A',
   unit: 'Unit Pelaksana Teknis Daerah Perlindungan Perempuan dan Anak (UPTD PPA)',
   headOfUnit: 'Theresia M. Dapa, S.Sos., M.Si.',
   nipHead: '19780512 200501 2 008',

@@ -12,6 +12,7 @@ import {
 import { CaseRecord } from '../types/case';
 import { DISTRICTS_NAGEKEO, VIOLENCE_TYPES, INSTITUTION_INFO } from '../data/initialData';
 import { storageService } from '../services/storageService';
+import crestPath from '../assets/images/crest_uptd_ppa_1792471725152.jpg';
 
 interface ReportsViewProps {
   cases: CaseRecord[];
@@ -180,19 +181,35 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ cases }) => {
       <div className="bg-white p-6 md:p-8 rounded-lg border border-neutral-200 shadow-xs print-container">
         
         {/* Official Letterhead Header (KOP SURAT) */}
-        <div className="border-b-2 border-neutral-900 pb-4 mb-6 text-center space-y-1">
-          <div className="text-xs uppercase tracking-wider font-semibold text-neutral-600">
-            Pemerintah Kabupaten Nagekeo
+        <div className="flex items-center gap-4 border-b-4 border-double border-neutral-900 pb-4 mb-6">
+          <div className="w-18 h-18 shrink-0">
+            <img 
+              src={crestPath} 
+              alt="Logo UPTD PPA Kabupaten Nagekeo" 
+              className="w-full h-full object-contain"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (!target.src.includes('/assets/images/')) {
+                  target.src = '/assets/images/crest_uptd_ppa_1792471725152.jpg';
+                }
+              }}
+            />
           </div>
-          <h2 className="text-base font-bold uppercase tracking-wide text-neutral-900">
-            Dinas Sosial, Pemberdayaan Perempuan dan Perlindungan Anak
-          </h2>
-          <h3 className="text-sm font-semibold uppercase text-sky-900">
-            Unit Pelaksana Teknis Daerah Perlindungan Perempuan dan Anak (UPTD PPA)
-          </h3>
-          <p className="text-[11px] text-neutral-500 font-mono">
-            {INSTITUTION_INFO.address} · Telp/Hotline: {INSTITUTION_INFO.hotline} · Email: {INSTITUTION_INFO.email}
-          </p>
+          <div className="flex-1 text-center space-y-0.5">
+            <div className="text-xs uppercase tracking-wider font-semibold text-neutral-600">
+              Pemerintah Kabupaten Nagekeo
+            </div>
+            <h2 className="text-sm md:text-base font-bold uppercase tracking-wide text-neutral-900">
+              Dinas Pemberdayaan Masyarakat dan Desa, Pemberdayaan Perempuan dan Perlindungan Anak (DINAS PMDP3A)
+            </h2>
+            <h3 className="text-xs md:text-sm font-semibold uppercase text-sky-900">
+              Unit Pelaksana Teknis Daerah Perlindungan Perempuan dan Anak (UPTD PPA)
+            </h3>
+            <p className="text-[11px] text-neutral-500 font-mono">
+              {INSTITUTION_INFO.address} · Telp/Hotline: {INSTITUTION_INFO.hotline} · Email: {INSTITUTION_INFO.email}
+            </p>
+          </div>
         </div>
 
         {/* Title of Document */}
@@ -338,7 +355,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ cases }) => {
             <div>
               <p className="text-neutral-600">Mengetahui,</p>
               <p className="font-bold text-neutral-900 uppercase">
-                Kepala Dinas Sosial, Pemberdayaan Perempuan dan Perlindungan Anak Kab. Nagekeo
+                Kepala Dinas PMDP3A Kabupaten Nagekeo
               </p>
             </div>
             <div>

@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { INSTITUTION_INFO } from '../data/initialData';
 
+import crestPath from '../assets/images/crest_uptd_ppa_1792471725152.jpg';
+
 interface SidebarProps {
   currentTab: string;
   onTabChange: (tab: string) => void;
@@ -32,8 +34,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onTogglePrivacy,
   onExportBackup
 }) => {
-  const crestPath = '/src/assets/images/crest_uptd_ppa_1792471725152.jpg';
-
   const navItems = [
     {
       id: 'dashboard',
@@ -72,24 +72,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div>
         {/* Institutional Branding Box */}
         <div className="p-4 border-b border-neutral-800 flex items-center gap-3">
-          <div className="w-11 h-11 rounded-lg overflow-hidden shrink-0 bg-neutral-800 border border-neutral-700">
+          <div className="w-11 h-11 rounded-lg overflow-hidden shrink-0 bg-neutral-800 border border-neutral-700 flex items-center justify-center">
             <img 
               src={crestPath} 
               alt="Lambang UPTD PPA Kabupaten Nagekeo"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover"
               onError={(e) => {
-                // styled fallback container
-                (e.target as HTMLElement).style.display = 'none';
+                // fallback to static public path if needed
+                const target = e.target as HTMLImageElement;
+                if (!target.src.includes('/assets/images/')) {
+                  target.src = '/assets/images/crest_uptd_ppa_1792471725152.jpg';
+                }
               }}
             />
           </div>
           <div className="min-w-0">
             <h2 className="text-xs font-semibold text-white tracking-tight leading-tight uppercase">
-              UPTD PPA Nagekeo
+              UPTD PPA NAGEKEO
             </h2>
-            <p className="text-[11px] text-neutral-400 truncate">
-              Dinsos P3A Kab. Nagekeo
+            <p className="text-[11px] text-sky-400 font-medium truncate" title="Dinas PMDP3A Kab. Nagekeo">
+              Dinas PMDP3A Kab. Nagekeo
             </p>
             <p className="text-[10px] text-neutral-500 font-mono">
               Provinsi NTT

@@ -12,6 +12,10 @@ import {
 import { CaseRecord } from '../types/case';
 import { DISTRICTS_NAGEKEO, CASE_MANAGERS } from '../data/initialData';
 
+import bannerImage from '../assets/images/banner_layanan_konseling_1792471725565.jpg';
+import peksosAvatar from '../assets/images/avatar_petugas_peksos_1792471725438.jpg';
+import hukumAvatar from '../assets/images/avatar_petugas_hukum_1792471726224.jpg';
+
 interface DashboardViewProps {
   cases: CaseRecord[];
   onSelectCase: (caseItem: CaseRecord) => void;
@@ -25,10 +29,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onOpenNewCase,
   onNavigateToRegister
 }) => {
-  const bannerImage = '/src/assets/images/banner_layanan_konseling_1792471725565.jpg';
-  const peksosAvatar = '/src/assets/images/avatar_petugas_peksos_1792471725438.jpg';
-  const hukumAvatar = '/src/assets/images/avatar_petugas_hukum_1792471726224.jpg';
-
   // Calculations
   const totalCases = cases.length;
   const childVictims = cases.filter(c => c.victim.category === 'Anak Perempuan' || c.victim.category === 'Anak Laki-Laki').length;
@@ -160,7 +160,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="mt-3 pt-3 border-t border-neutral-100 flex items-center gap-2 text-xs text-neutral-500">
             <span>Kasus KDRT &amp; Lainnya</span>
             <span aria-hidden="true">·</span>
-            <span>Pemulihan Dinsos</span>
+            <span>Pemulihan PMDP3A</span>
           </div>
         </div>
 

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { CaseRecord } from '../types/case';
 import { INSTITUTION_INFO } from '../data/initialData';
+import crestPath from '../assets/images/crest_uptd_ppa_1792471725152.jpg';
 
 interface OfficialDocumentsViewProps {
   cases: CaseRecord[];
@@ -30,7 +31,6 @@ export const OfficialDocumentsView: React.FC<OfficialDocumentsViewProps> = ({
   const [maskPrivacy, setMaskPrivacy] = useState(false);
 
   const selectedCase = cases.find(c => c.id === selectedCaseId) || cases[0];
-  const crestPath = '/src/assets/images/crest_uptd_ppa_1792471725152.jpg';
 
   const handlePrint = () => {
     window.print();
@@ -141,14 +141,20 @@ export const OfficialDocumentsView: React.FC<OfficialDocumentsViewProps> = ({
               alt="Logo UPTD PPA Kabupaten Nagekeo" 
               className="w-full h-full object-contain"
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (!target.src.includes('/assets/images/')) {
+                  target.src = '/assets/images/crest_uptd_ppa_1792471725152.jpg';
+                }
+              }}
             />
           </div>
           <div className="flex-1 text-center space-y-0.5">
             <h2 className="text-sm md:text-base font-bold uppercase tracking-wider text-neutral-900">
               Pemerintah Kabupaten Nagekeo
             </h2>
-            <h1 className="text-sm md:text-lg font-extrabold uppercase tracking-tight text-neutral-900">
-              Dinas Sosial, Pemberdayaan Perempuan dan Perlindungan Anak
+            <h1 className="text-sm md:text-base font-extrabold uppercase tracking-tight text-neutral-900">
+              Dinas Pemberdayaan Masyarakat dan Desa, Pemberdayaan Perempuan dan Perlindungan Anak (DINAS PMDP3A)
             </h1>
             <h3 className="text-xs md:text-sm font-bold uppercase tracking-wide text-sky-900">
               Unit Pelaksana Teknis Daerah Perlindungan Perempuan dan Anak (UPTD PPA)
@@ -461,7 +467,7 @@ export const OfficialDocumentsView: React.FC<OfficialDocumentsViewProps> = ({
             </div>
 
             <p className="text-justify leading-relaxed">
-              Telah diterima di Kantor UPTD Perlindungan Perempuan dan Anak (UPTD PPA) Dinas Sosial P3A Kabupaten Nagekeo, pengaduan dugaan kekerasan dengan data:
+              Telah diterima di Kantor UPTD Perlindungan Perempuan dan Anak (UPTD PPA) Dinas PMDP3A Kabupaten Nagekeo, pengaduan dugaan kekerasan dengan data:
             </p>
 
             <div className="p-4 bg-neutral-50 rounded border border-neutral-200 space-y-2">

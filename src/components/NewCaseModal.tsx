@@ -780,7 +780,7 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
                     'Penempatan Rumah Aman (Shelter)',
                     'Bantuan Medis Pengobatan Luka',
                     'Mediasi Keluarga & Tokoh Adat',
-                    'Bantuan Sosial Pangan Dinsos'
+                    'Bantuan Sosial / Perlindungan PMDP3A'
                   ].map((srv) => (
                     <button
                       type="button"
